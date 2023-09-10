@@ -33,10 +33,15 @@ class MainActivity : AppCompatActivity() {
 
         getRandomQuote()
 
-        val btnShare = findViewById<Button>(R.id.btnShare)
-
         binding.btnNewQuote.setOnClickListener {
             getRandomQuote()
+        }
+
+        binding.btnShare.setOnClickListener{
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.setType("text/plain")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "No Quote No Life! Get your daily quote with daQuotes")
+            startActivity(Intent.createChooser(shareIntent, "Share daQuote to your relatives!"))
         }
 
         binding.btnAllQuotes.setOnClickListener {

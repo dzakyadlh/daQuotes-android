@@ -11,7 +11,7 @@ import com.dzakyadlh.daquote.databinding.ActivityListQuotesBinding
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
-import org.json.JSONArray
+import org.json.JSONObject
 
 class ListQuotesActivity : AppCompatActivity() {
     companion object {
@@ -43,12 +43,13 @@ class ListQuotesActivity : AppCompatActivity() {
                 val result = String(responseBody)
                 Log.d(TAG, result)
                 try {
-                    val jsonArray = JSONArray(result)
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray.getJSONObject(i)
-                        val quote = jsonObject.getString("content")
-                        val author = jsonObject.getString("author")
-                        listQuote.add("\n$quote\n — $author\n")
+                    val jsonObject = JSONObject(result)
+                    val quotesArray = jsonObject.getJSONArray("results")
+                    for (i in 0 until quotesArray.length()) {
+                        val quoteObject = quotesArray.getJSONObject(i)
+                        val quote = quoteObject.getString("content")
+                        val author = quoteObject.getString("author")
+                        listQuote.add("\n$quote\n ~ $author\n")
                     }
                     val adapter = QuoteAdapter(listQuote)
                     binding.listQuotes.adapter = adapter
